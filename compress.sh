@@ -11,9 +11,18 @@ printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%"
 
 }
 
-mkdir compressed
-FILES="./*.JPG"
-count=$(ls -dq *.JPG* | wc -l)
+target_ext=${1:-"JPG"}
+
+FILES="./*.$target_ext"
+count=$(ls -dq *.$target_ext | wc -l)
+
+echo "Found $count .$target_ext files"
+if [ "$count" -eq "0" ]; then
+   exit 0
+fi
+
+mkdir compressed &> /dev/null
+
 index=0
 for f in $FILES 
 do
